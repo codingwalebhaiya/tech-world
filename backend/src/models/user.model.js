@@ -10,7 +10,7 @@ const userSchema = new Schema(
       unique: true,
       lowerCase: true,
       trim: true,
-      index: true,
+      index: true, 
     },
     email: {
       type: String,
@@ -32,7 +32,7 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
-  },
+  }, 
   { timestamps: true }
 );
 
