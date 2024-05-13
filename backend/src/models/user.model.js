@@ -38,11 +38,13 @@ const userSchema = new Schema(
 
 // password encrypt by bcrypt
 userSchema.pre("save", async function (next) {
-  if (!this.isModified(password)) return next();
+  if (!this.isModified("password")){
+    return next()
+  }
 
   this.password = bcrypt.hash(this.password, 10);
   next();
-});
+}); 
 
 // compare between user-input-password and database-store-encrypted-password
 userSchema.methods.isPasswordCorrect = async function (password) {
@@ -83,4 +85,4 @@ userSchema.methods.generateRefreshToken = function () {
   
 
 export const User = mongoose.model("User", userSchema);
- 
+  
