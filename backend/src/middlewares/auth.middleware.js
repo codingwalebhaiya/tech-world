@@ -28,7 +28,6 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     // if user does not present
 
     if (!user) {
-      // video no-15: discuss about frontend
       throw new ApiError(401, "Invalid Access Token");
     }
 
