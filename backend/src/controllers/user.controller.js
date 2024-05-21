@@ -29,8 +29,6 @@ const registerUser = asyncHandler(async (req, res) => {
   // get user details from frontend
   // validation - not empty
   // check if user already exists : check through username and email
-  // check for images , check for avatar
-  // upload them to cloudinary, avatar
   // create user object - create entry in db
   // remove password and refresh token field from response
   // check for user creation
@@ -75,36 +73,39 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
 });
 
+
 // loginUser
 
 const loginUser = asyncHandler(async (req, res) => {
-  // req.body - data
+  // take the data from -  req body (frontend).
   // username or email
   // find the user
   // password check
-  // generate access and refresh token
-  // data send to user through secure cookies
+  // if password is correct then access token and refresh token will do generate
+  // send the token in form of secure cookies - to User
+  // and finally send a response that user successfully login.
 
-  const { username, email, password } = req.body;
+  // take the data from -  req body.
+  const { email, username, password } = req.body;
+  console.log(email);
 
-  // if you want to login through both username and email-
+  // username or email
   if (!username && !email) {
-   throw new ApiError(400, "username or password is required");
-   }
+    throw new ApiError(400, "username or email is required");
+  }
 
-
-  // but if you want to login through only username or email -
+  //here is an alternative of above code based on logic discussion
   // if(!(username || email)){
-  //  throw new ApiError(400, "both username & email is required")
+  // throw new ApiError(400, "username or email is required")
   //}
 
-
-  const user = User.findOne({
+  // find the user - by findOne i am finding user (username, email) in mangoose database - that is called Query.
+  const user = await User.findOne({
     $or: [{ username }, { email }],
   });
 
   if (!user) {
-    throw new ApiError(400, "User does not exist");
+    throw new ApiError(404, "User does not exist");
   }
 
   // always remember this point
@@ -116,8 +117,9 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid user credentials");
-  }
+  } 
 
+  // access and refresh token
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id
   );
@@ -125,6 +127,8 @@ const loginUser = asyncHandler(async (req, res) => {
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
+
+  // send the token in form of secure cookies - to User
 
   const options = {
     httpOnly: true,
@@ -143,7 +147,7 @@ const loginUser = asyncHandler(async (req, res) => {
           accessToken,
           refreshToken,
         },
-        "User logged In Successfully!!"
+        "User logged In Successfully"
       )
     );
 });
