@@ -1,13 +1,16 @@
-
-import  { useState } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    fullName:'',
+    fullName: '',
     username: '',
     email: '',
     password: '',
   });
+
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -16,10 +19,19 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    setError(null); // Clear any previous errors
+    setSuccess(null); // Clear any previous success message
+
+    try {
+      const response = await axios.post('/api/v1/users/register', formData);
+      setSuccess('Registration successful!'); // Show success message
+      console.log('Form submitted:', response.data);
+    } catch (error) {
+      setError('Registration failed. Please try again.'); // Show error message
+      console.error('Error registering:', error);
+    }
   };
 
   return (
@@ -27,9 +39,9 @@ const Register = () => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         <form onSubmit={handleSubmit}>
-        <div className="mb-4">
+          <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="fullName">
-             FullName
+              Full Name
             </label>
             <input
               type="text"
@@ -83,6 +95,8 @@ const Register = () => {
               required
             />
           </div>
+          {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
+          {success && <p className="text-green-500 text-xs italic mb-4">{success}</p>}
           <div className="flex items-center justify-between">
             <button
               type="submit"

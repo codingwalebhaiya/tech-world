@@ -1,5 +1,5 @@
-
-import  { useState } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +8,9 @@ const Login = () => {
     password: '',
   });
 
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -15,10 +18,19 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    setError(null); // Clear any previous errors
+    setSuccess(null); // Clear any previous success message
+
+    try {
+      const response = await axios.post('/api/v1/users/login', formData);
+      setSuccess('Login successful!'); // Show success message
+      console.log('Login successful:', response.data);
+    } catch (error) {
+      setError('Login failed. Please try again.'); // Show error message
+      console.error('Error logging in:', error);
+    }
   };
 
   return (
@@ -26,7 +38,6 @@ const Login = () => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form onSubmit={handleSubmit}>
-      
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
               Username
@@ -69,12 +80,14 @@ const Login = () => {
               required
             />
           </div>
+          {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
+          {success && <p className="text-green-500 text-xs italic mb-4">{success}</p>}
           <div className="flex items-center justify-between">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-             Login
+              Login
             </button>
           </div>
         </form>
