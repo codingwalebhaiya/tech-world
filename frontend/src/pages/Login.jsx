@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+
 const Login = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -34,8 +35,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-zinc-800">
+      <div className="bg-slate-400 p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -90,9 +91,13 @@ const Login = () => {
               Login
             </button>
           </div>
+
+
         </form>
-      </div>
+      </div> 
     </div>
+
+
   );
 };
 
