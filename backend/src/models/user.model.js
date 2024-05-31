@@ -33,8 +33,8 @@ const userSchema = new Schema({
     },
     refreshToken:{
         type:String
-    }, 
-    
+    },   
+     
 }, {timestamps:true})
 
 // write the for encrypted password
