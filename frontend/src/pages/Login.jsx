@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Login = () => {
@@ -11,6 +13,8 @@ const Login = () => {
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const navigate = useNavigate()
+ 
 
   const handleChange = (e) => {
     setFormData({
@@ -28,6 +32,7 @@ const Login = () => {
       const response = await axios.post('/api/v1/users/login', formData);
       setSuccess('Login successful!'); // Show success message
       console.log('Login successful:', response.data);
+     navigate('/')
     } catch (error) {
       setError('Login failed. Please try again.'); // Show error message
       console.error('Error logging in:', error);
@@ -81,8 +86,8 @@ const Login = () => {
               required
             />
           </div>
-          {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
-          {success && <p className="text-green-500 text-xs italic mb-4">{success}</p>}
+          {error && <p className="text-red-800 text-xl italic mb-4">{error}</p>}
+          {success && <p className="text-green-800 text-xl italic mb-4">{success}</p>}
           <div className="flex items-center justify-between">
             <button
               type="submit"

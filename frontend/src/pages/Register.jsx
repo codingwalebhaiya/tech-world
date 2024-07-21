@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom"
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Register = () => {
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setFormData({
@@ -28,6 +30,7 @@ const Register = () => {
       const response = await axios.post('/api/v1/users/register', formData);
       setSuccess('Registration successful!'); // Show success message
       console.log('Form submitted:', response.data);
+      navigate('/login')
     } catch (error) {
       setError('Registration failed. Please try again.'); // Show error message
       console.error('Error registering:', error);
@@ -95,8 +98,8 @@ const Register = () => {
               required
             />
           </div>
-          {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
-          {success && <p className="text-green-500 text-xs italic mb-4">{success}</p>}
+          {error && <p className="text-red-800 text-xl italic mb-4">{error}</p>}
+          {success && <p className="text-green-800 text-xl italic mb-4">{success}</p>}
           <div className="flex items-center justify-between">
             <button
               type="submit"
