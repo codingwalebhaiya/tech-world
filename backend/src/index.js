@@ -1,4 +1,4 @@
-import connectDB from "./db/index.js";
+import connectDB from "./db/db.js";
 import dotenv from "dotenv";
 import app from "./app.js"; 
 
@@ -18,4 +18,4 @@ connectDB()
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err);  
   }); 
-  
+   
